@@ -1,13 +1,8 @@
 #!/bin/bash
 if [ "x$SERVER_NAMES" != "x" ]; then
-    # Use first domain as Apache ServerName.
-    SERVER_NAME="${SERVER_NAMES%%,*}"
-    sed -e "s|server_name .*|server_name $SERVER_NAME|" \
-        -i /etc/nginx/conf.d/default.conf
-
-    # Replace commas with spaces and set as Apache ServerAlias.
+    # Replace commas with spaces
     SERVER_ALIAS="`printf '%s\n' "$SERVER_NAMES" | tr ',' ' '`"
-    sed -e "/server_name/a\ \ ServerAlias $SERVER_ALIAS" \
+    sed -e "s|server_name .*|server_name $SERVER_ALIAS;|" \
         -i /etc/nginx/conf.d/default.conf
 fi
 
